@@ -1,3 +1,0 @@
-{$MY_URL} {
-    reverse_proxy union-be:3000
-}
