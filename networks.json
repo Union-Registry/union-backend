@@ -1,8 +1,8 @@
 {
   "scroll-sepolia": {
-    "CivilRegistry": {
-      "address": "0xfe1EE0b467589CC491df494DB3eE3c8faf219889",
-      "startBlock": 7300232
+    "TransparentUpgradeableProxy": {
+      "address": "0x123D13d263FED961e3de8780d5feFb7acd04A0eF",
+      "startBlock": 7300934
     }
   }
 }

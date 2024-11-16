@@ -5,34 +5,25 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: CivilRegistry
+    name: TransparentUpgradeableProxy
     network: scroll-sepolia
     source:
       address: "0x123D13d263FED961e3de8780d5feFb7acd04A0eF"
-      abi: CivilRegistry
+      abi: TransparentUpgradeableProxy
       startBlock: 7300934
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - Initialized
-        - OwnershipTransferred
-        - UnionAccepted
-        - UnionProposed
-        - UnionRevoked
+        - AdminChanged
+        - Upgraded
       abis:
-        - name: CivilRegistry
-          file: ./abis/CivilRegistry.json
+        - name: TransparentUpgradeableProxy
+          file: ./abis/TransparentUpgradeableProxy.json
       eventHandlers:
-        - event: Initialized(uint64)
-          handler: handleInitialized
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-        - event: UnionAccepted(uint256,uint64)
-          handler: handleUnionAccepted
-        - event: UnionProposed(uint256)
-          handler: handleUnionProposed
-        - event: UnionRevoked(uint256)
-          handler: handleUnionRevoked
-      file: ./src/civil-registry.ts
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/transparent-upgradeable-proxy.ts
