@@ -1,4 +1,3 @@
-// src/models/User.js
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -7,28 +6,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  isVerified: {
-    type: Boolean,
-    default: false
-  },
-  verificationDate: {
+  createdAt: {
     type: Date,
-    default: null
+    default: Date.now
   },
-  partnerAddress: {
-    type: String,
-    default: null
-  },
-  unionContractAddress: {
-    type: String,
-    default: null
-  },
-  unionContractSigned: {
-    type: Boolean,
-    default: false
+  updatedAt: {
+    type: Date,
+    default: Date.now
   }
-}, {
-  timestamps: true
 });
 
 module.exports = mongoose.model('User', userSchema);
