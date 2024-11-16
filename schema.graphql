@@ -36,12 +36,12 @@ type Union @entity {
 
 type UnionProposed @entity(immutable: true) {
   id: Bytes!
-  unionId: BigInt! # uint256
-  sender: Bytes! # address - add this line
+  unionId: BigInt!
+  sender: Bytes!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
-  union: Union! # Add this reference
+  union: Union! # Reference to Union entity
 }
 
 type UnionRevoked @entity(immutable: true) {

@@ -56,34 +56,43 @@ export function handleUnionAccepted(event: UnionAcceptedEvent): void {
   entity.save()
 }
 
-import { Union as UnionContract } from "../generated/TransparentUpgradeableProxy/TransparentUpgradeableProxy"
+import { CivilRegistry } from "../generated/CivilRegistry/CivilRegistry"
+import { Union } from "../generated/schema"
+import { Address, Bytes } from "@graphprotocol/graph-ts"
 
 export function handleUnionProposed(event: UnionProposedEvent): void {
   let entity = new UnionProposed(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
   
-  // Create or load Union entity
+  // Create Union entity
   let unionId = event.params.unionId.toString()
-  let union = new Union(unionId)
+  let union = Union.load(unionId)
+  if (!union) {
+    union = new Union(unionId)
+  }
   
   // Load contract
-  let contract = UnionContract.bind(event.address)
+  let contract = CivilRegistry.bind(event.address)
   
   // Get union data from contract
-  let unionData = contract.getUnion(event.params.unionId)
+  let unionData = contract.try_getUnion(event.params.unionId)
   
-  // Set union data
-  union.participants = unionData.participants
-  union.vows = unionData.vows
-  union.ringIds = unionData.ringIds
-  union.accepted = unionData.accepted
-  union.attestationUid = unionData.attestationUid
-  
-  // Save union entity
-  union.save()
+  if (!unionData.reverted) {
+    let participantsBytes: Array<Bytes> = []
+    const participants = unionData.value.getParticipants()
+    for (let i = 0; i < participants.length; i++) {
+      participantsBytes.push(participants[i] as Bytes)
+    }
+    union.participants = participantsBytes
+    union.vows = unionData.value.getVows()
+    union.ringIds = unionData.value.getRingIds()
+    union.accepted = unionData.value.getAccepted()
+    union.attestationUid = unionData.value.getAttestationUid()
+    union.save()
+  }
 
-  // Set rest of UnionProposed entity data
+  // Set UnionProposed entity data
   entity.unionId = event.params.unionId
   entity.sender = event.transaction.from
   entity.blockNumber = event.block.number
