@@ -1,15 +1,42 @@
-type AdminChanged @entity(immutable: true) {
+type Initialized @entity(immutable: true) {
   id: Bytes!
-  previousAdmin: Bytes! # address
-  newAdmin: Bytes! # address
+  version: BigInt! # uint64
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
 
-type Upgraded @entity(immutable: true) {
+type OwnershipTransferred @entity(immutable: true) {
   id: Bytes!
-  implementation: Bytes! # address
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UnionAccepted @entity(immutable: true) {
+  id: Bytes!
+  unionId: BigInt! # uint256
+  sender: Bytes! # address - add this line
+  attestationUid: BigInt! # uint64
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UnionProposed @entity(immutable: true) {
+  id: Bytes!
+  unionId: BigInt! # uint256
+  sender: Bytes! # address - add this line
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UnionRevoked @entity(immutable: true) {
+  id: Bytes!
+  unionId: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

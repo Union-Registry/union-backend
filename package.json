@@ -1,13 +1,13 @@
 {
-  "name": "union-be",
+  "name": "union-registry-2",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ union-be",
-    "create-local": "graph create --node http://localhost:8020/ union-be",
-    "remove-local": "graph remove --node http://localhost:8020/ union-be",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 union-be",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ union-registry-2",
+    "create-local": "graph create --node http://localhost:8020/ union-registry-2",
+    "remove-local": "graph remove --node http://localhost:8020/ union-registry-2",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 union-registry-2",
     "test": "graph test"
   },
   "dependencies": {

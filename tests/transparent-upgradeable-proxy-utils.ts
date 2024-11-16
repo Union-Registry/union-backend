@@ -1,42 +1,101 @@
 import { newMockEvent } from "matchstick-as"
-import { ethereum, Address } from "@graphprotocol/graph-ts"
+import { ethereum, BigInt, Address } from "@graphprotocol/graph-ts"
 import {
-  AdminChanged,
-  Upgraded
+  Initialized,
+  OwnershipTransferred,
+  UnionAccepted,
+  UnionProposed,
+  UnionRevoked
 } from "../generated/TransparentUpgradeableProxy/TransparentUpgradeableProxy"
 
-export function createAdminChangedEvent(
-  previousAdmin: Address,
-  newAdmin: Address
-): AdminChanged {
-  let adminChangedEvent = changetype<AdminChanged>(newMockEvent())
+export function createInitializedEvent(version: BigInt): Initialized {
+  let initializedEvent = changetype<Initialized>(newMockEvent())
 
-  adminChangedEvent.parameters = new Array()
+  initializedEvent.parameters = new Array()
 
-  adminChangedEvent.parameters.push(
+  initializedEvent.parameters.push(
     new ethereum.EventParam(
-      "previousAdmin",
-      ethereum.Value.fromAddress(previousAdmin)
+      "version",
+      ethereum.Value.fromUnsignedBigInt(version)
     )
   )
-  adminChangedEvent.parameters.push(
-    new ethereum.EventParam("newAdmin", ethereum.Value.fromAddress(newAdmin))
-  )
 
-  return adminChangedEvent
+  return initializedEvent
 }
 
-export function createUpgradedEvent(implementation: Address): Upgraded {
-  let upgradedEvent = changetype<Upgraded>(newMockEvent())
+export function createOwnershipTransferredEvent(
+  previousOwner: Address,
+  newOwner: Address
+): OwnershipTransferred {
+  let ownershipTransferredEvent = changetype<OwnershipTransferred>(
+    newMockEvent()
+  )
 
-  upgradedEvent.parameters = new Array()
+  ownershipTransferredEvent.parameters = new Array()
 
-  upgradedEvent.parameters.push(
+  ownershipTransferredEvent.parameters.push(
     new ethereum.EventParam(
-      "implementation",
-      ethereum.Value.fromAddress(implementation)
+      "previousOwner",
+      ethereum.Value.fromAddress(previousOwner)
+    )
+  )
+  ownershipTransferredEvent.parameters.push(
+    new ethereum.EventParam("newOwner", ethereum.Value.fromAddress(newOwner))
+  )
+
+  return ownershipTransferredEvent
+}
+
+export function createUnionAcceptedEvent(
+  unionId: BigInt,
+  attestationUid: BigInt
+): UnionAccepted {
+  let unionAcceptedEvent = changetype<UnionAccepted>(newMockEvent())
+
+  unionAcceptedEvent.parameters = new Array()
+
+  unionAcceptedEvent.parameters.push(
+    new ethereum.EventParam(
+      "unionId",
+      ethereum.Value.fromUnsignedBigInt(unionId)
+    )
+  )
+  unionAcceptedEvent.parameters.push(
+    new ethereum.EventParam(
+      "attestationUid",
+      ethereum.Value.fromUnsignedBigInt(attestationUid)
     )
   )
 
-  return upgradedEvent
+  return unionAcceptedEvent
+}
+
+export function createUnionProposedEvent(unionId: BigInt): UnionProposed {
+  let unionProposedEvent = changetype<UnionProposed>(newMockEvent())
+
+  unionProposedEvent.parameters = new Array()
+
+  unionProposedEvent.parameters.push(
+    new ethereum.EventParam(
+      "unionId",
+      ethereum.Value.fromUnsignedBigInt(unionId)
+    )
+  )
+
+  return unionProposedEvent
+}
+
+export function createUnionRevokedEvent(unionId: BigInt): UnionRevoked {
+  let unionRevokedEvent = changetype<UnionRevoked>(newMockEvent())
+
+  unionRevokedEvent.parameters = new Array()
+
+  unionRevokedEvent.parameters.push(
+    new ethereum.EventParam(
+      "unionId",
+      ethereum.Value.fromUnsignedBigInt(unionId)
+    )
+  )
+
+  return unionRevokedEvent
 }
