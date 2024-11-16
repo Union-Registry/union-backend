@@ -56,15 +56,40 @@ export function handleUnionAccepted(event: UnionAcceptedEvent): void {
   entity.save()
 }
 
+import { Union as UnionContract } from "../generated/TransparentUpgradeableProxy/TransparentUpgradeableProxy"
+
 export function handleUnionProposed(event: UnionProposedEvent): void {
   let entity = new UnionProposed(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
+  
+  // Create or load Union entity
+  let unionId = event.params.unionId.toString()
+  let union = new Union(unionId)
+  
+  // Load contract
+  let contract = UnionContract.bind(event.address)
+  
+  // Get union data from contract
+  let unionData = contract.getUnion(event.params.unionId)
+  
+  // Set union data
+  union.participants = unionData.participants
+  union.vows = unionData.vows
+  union.ringIds = unionData.ringIds
+  union.accepted = unionData.accepted
+  union.attestationUid = unionData.attestationUid
+  
+  // Save union entity
+  union.save()
+
+  // Set rest of UnionProposed entity data
   entity.unionId = event.params.unionId
-  entity.sender = event.transaction.from  // add this line
+  entity.sender = event.transaction.from
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
+  entity.union = unionId
 
   entity.save()
 }

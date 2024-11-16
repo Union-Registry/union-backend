@@ -25,6 +25,15 @@ type UnionAccepted @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
+type Union @entity {
+  id: String!
+  participants: [Bytes!]!
+  vows: [String!]!
+  ringIds: [BigInt!]!
+  accepted: Boolean!
+  attestationUid: BigInt
+}
+
 type UnionProposed @entity(immutable: true) {
   id: Bytes!
   unionId: BigInt! # uint256
@@ -32,6 +41,7 @@ type UnionProposed @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+  union: Union! # Add this reference
 }
 
 type UnionRevoked @entity(immutable: true) {
