@@ -1,0 +1,38 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: CivilRegistry
+    network: scroll-sepolia
+    source:
+      address: "0xfe1EE0b467589CC491df494DB3eE3c8faf219889"
+      abi: CivilRegistry
+      startBlock: 7300232
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Initialized
+        - OwnershipTransferred
+        - UnionAccepted
+        - UnionProposed
+        - UnionRevoked
+      abis:
+        - name: CivilRegistry
+          file: ./abis/CivilRegistry.json
+      eventHandlers:
+        - event: Initialized(uint64)
+          handler: handleInitialized
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: UnionAccepted(uint256,uint64)
+          handler: handleUnionAccepted
+        - event: UnionProposed(uint256)
+          handler: handleUnionProposed
+        - event: UnionRevoked(uint256)
+          handler: handleUnionRevoked
+      file: ./src/civil-registry.ts

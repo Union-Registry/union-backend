@@ -1,0 +1,8 @@
+{
+  "scroll-sepolia": {
+    "CivilRegistry": {
+      "address": "0xfe1EE0b467589CC491df494DB3eE3c8faf219889",
+      "startBlock": 7300232
+    }
+  }
+}
