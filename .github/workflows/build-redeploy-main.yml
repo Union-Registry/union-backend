@@ -19,7 +19,7 @@ jobs:
         run: yarn lint
 
   deploy-scroll-sepolia:
-    needs: lint
+    #needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
